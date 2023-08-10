@@ -3,36 +3,36 @@ import './LessonPlan.css'
 import { Editor } from 'react-draft-wysiwyg'
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 
-const tempData = [
-  {
+const LessonPlan = () => {
+  const tempData = [
+    {
+      topicName: '',
+      selected: false,
+      topicDescription: '',
+      contentData: '',
+      uploadContent: [
+        'https://svbk-lms.s3.ap-south-1.amazonaws.com/aautie/images.jpeg',
+        'https://svbk-lms.s3.ap-south-1.amazonaws.com/aautie/Wallpaper.jpeg',
+      ],
+      subTopics: [],
+    },
+  ]
+  let subTopicObject = {
+    subTopicName: '',
+    subTopicDescription: '',
+    contentData: '',
+    uploadContent: [],
+    selected: false,
+  }
+
+  let topicObject = {
     topicName: '',
     selected: false,
     topicDescription: '',
     contentData: '',
-    uploadContent: [
-      'https://svbk-lms.s3.ap-south-1.amazonaws.com/aautie/images.jpeg',
-      'https://svbk-lms.s3.ap-south-1.amazonaws.com/aautie/Wallpaper.jpeg',
-    ],
+    uploadContent: [],
     subTopics: [],
-  },
-]
-let subTopicObject = {
-  subTopicName: '',
-  subTopicDescription: '',
-  contentData: '',
-  uploadContent: [],
-  selected: false,
-}
-
-let topicObject = {
-  topicName: '',
-  selected: false,
-  topicDescription: '',
-  contentData: '',
-  uploadContent: [],
-  subTopics: [],
-}
-export const LessonPlan = () => {
+  }
   const [data, setData] = useState(tempData)
   const [currentTopic, setCurrentTopic] = useState(1)
   const [currentSubTopic, setCurrentSubTopic] = useState(1)
@@ -111,8 +111,8 @@ export const LessonPlan = () => {
   }
 
   const onDeleteTopic = (indexValue) => {
-    let l = data.length
-    let temp = data.filter((each, index) => index !== indexValue)
+    let l = data?.length
+    let temp = data?.filter((each, index) => index !== indexValue)
     setData(temp)
     if (currentTopic === l) {
       setCurrentTopic(currentTopic - 1)
@@ -256,7 +256,7 @@ export const LessonPlan = () => {
       </div>
     )
   }
-  const topicLength = data.length
+  const topicLength = data?.length
   const subTopicLength = data?.[currentTopic - 1]?.subTopics?.length
   return (
     <div style={{ padding: '20px' }}>
@@ -337,7 +337,7 @@ export const LessonPlan = () => {
         </div>
       </div>
 
-      {data.map((each, index) =>
+      {data?.map((each, index) =>
         currentTopic === index + 1
           ? mainFunction(each, 'topic', `topic ${index}`)
           : null
@@ -399,7 +399,7 @@ export const LessonPlan = () => {
             color: '#8687a7',
           }}
           onClick={() => {
-            let modification = data.map((each, index) => {
+            let modification = data?.map((each, index) => {
               if (index + 1 === currentTopic) {
                 let temp = [...each.subTopics, subTopicObject]
                 return { ...each, subTopics: temp }
@@ -412,7 +412,7 @@ export const LessonPlan = () => {
           +
         </button>
       </div>
-      {data.length > 0 &&
+      {data?.length > 0 &&
         data[currentTopic - 1]?.subTopics?.map((subEach, subIndex) => {
           if (currentSubTopic === subIndex + 1) {
             return mainFunction(subEach, 'subTopic', `sub ${subIndex}`)
@@ -423,3 +423,5 @@ export const LessonPlan = () => {
     </div>
   )
 }
+
+export default LessonPlan
