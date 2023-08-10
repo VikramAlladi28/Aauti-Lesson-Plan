@@ -1,4 +1,4 @@
-import { LessonPlan } from './LessonPlan'
+import LessonPlan from './LessonPlan'
 
 export default {
   title: 'LessonPlan/Component',
