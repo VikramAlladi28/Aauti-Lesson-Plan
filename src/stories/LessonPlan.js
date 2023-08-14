@@ -148,9 +148,6 @@ const LessonPlan = () => {
           style={{
             flex: 1,
             width: '99.3%',
-            borderWidth: 1,
-            borderColor: 'lightgray',
-            borderStyle: 'solid',
           }}
           value={input === 'topic' ? each.topicName : each.subTopicName}
           onChange={(e) =>
@@ -179,10 +176,6 @@ const LessonPlan = () => {
           editorClassName='editorClassName localEditor'
           style={{
             width: '100%',
-            borderWidth: 1,
-            borderColor: 'lightgray',
-            borderStyle: 'solid',
-            borderRadius: 15,
           }}
         />
       </>
