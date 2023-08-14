@@ -1,6 +1,6 @@
 {
   "name": "aauti-lesson-plan",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "main": "dist/cjs",
   "module": "dist/es",
   "sideEffects": [
