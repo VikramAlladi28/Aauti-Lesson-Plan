@@ -4,7 +4,7 @@
     height: 35px;
     padding-left: 5px;
     border-color: lightgray;
-    border-width: 1;
+    border-width: 1px;
     border-radius: 5px;
     border-style: solid;
     /* margin-bottom: 20px; */
@@ -19,10 +19,10 @@
     
 }
 .localEditorBorder{
-    border-width: 1;
+    border-width: 1px;
     border-color: lightgray;
     border-style: solid;
-    border-radius: 15;
+    border-radius: 5px;
     overflow-y: auto;
 }
 
