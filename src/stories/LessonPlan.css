@@ -4,10 +4,9 @@
     height: 35px;
     padding-left: 5px;
     border-color: lightgray;
-    border-width: "1px";
+    border-width: 1px;
     border-radius: 5px;
     border-style: solid;
-    border :1px solid lightgray
     /* margin-bottom: 20px; */
 }
 

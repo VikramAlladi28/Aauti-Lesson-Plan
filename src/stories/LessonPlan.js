@@ -145,7 +145,13 @@ const LessonPlan = () => {
         <input
           className='input'
           placeholder={input === 'topic' ? 'Topic Name' : 'SubTopic Name'}
-          style={{ flex: 1, width: '99.3%' }}
+          style={{
+            flex: 1,
+            width: '99.3%',
+            borderWidth: 1,
+            borderColor: 'lightgray',
+            borderStyle: 'solid',
+          }}
           value={input === 'topic' ? each.topicName : each.subTopicName}
           onChange={(e) =>
             input === 'topic'
@@ -171,7 +177,13 @@ const LessonPlan = () => {
           toolbarClassName='toolbarClassName localToolBar'
           wrapperClassName='wrapperClassName localEditor localEditorBorder'
           editorClassName='editorClassName localEditor'
-          style={{ width: '100%' }}
+          style={{
+            width: '100%',
+            borderWidth: 1,
+            borderColor: 'lightgray',
+            borderStyle: 'solid',
+            borderRadius: 15,
+          }}
         />
       </>
     )
