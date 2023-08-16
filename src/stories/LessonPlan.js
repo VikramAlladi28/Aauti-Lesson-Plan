@@ -2,40 +2,47 @@ import React, { useState } from 'react'
 import './LessonPlan.css'
 import { Editor } from 'react-draft-wysiwyg'
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
+import PropTypes from 'prop-types'
 
-const LessonPlan = () => {
-  const tempData = [
-    {
-      topicName: '',
-      selected: false,
-      topicDescription: '',
-      contentData: '',
-      uploadContent: [
-        'https://svbk-lms.s3.ap-south-1.amazonaws.com/aautie/images.jpeg',
-        'https://svbk-lms.s3.ap-south-1.amazonaws.com/aautie/Wallpaper.jpeg',
-      ],
-      subTopics: [],
-    },
-  ]
-  let subTopicObject = {
-    subTopicName: '',
-    subTopicDescription: '',
-    contentData: '',
-    uploadContent: [],
-    selected: false,
-  }
-
-  let topicObject = {
+const tempData = [
+  {
     topicName: '',
     selected: false,
     topicDescription: '',
     contentData: '',
-    uploadContent: [],
+    uploadContent: [
+      'https://svbk-lms.s3.ap-south-1.amazonaws.com/aautie/images.jpeg',
+      'https://svbk-lms.s3.ap-south-1.amazonaws.com/aautie/Wallpaper.jpeg',
+    ],
     subTopics: [],
-  }
+  },
+]
+let subTopicObject = {
+  subTopicName: '',
+  subTopicDescription: '',
+  contentData: '',
+  uploadContent: [],
+  selected: false,
+}
+
+let topicObject = {
+  topicName: '',
+  selected: false,
+  topicDescription: '',
+  contentData: '',
+  uploadContent: [],
+  subTopics: [],
+}
+
+const LessonPlan = ({ primary, LessonPlanObj, onSubmit }) => {
+  console.log(primary, 'primary', LessonPlanObj)
   const [data, setData] = useState(tempData)
   const [currentTopic, setCurrentTopic] = useState(1)
   const [currentSubTopic, setCurrentSubTopic] = useState(1)
+
+  const onSubmitButton = () => {
+    onSubmit && onSubmit(data)
+  }
 
   const onChangeTopicInputs = (text, input) => {
     const newTopicList = data?.map((eachTopic, idx) => {
@@ -425,8 +432,42 @@ const LessonPlan = () => {
             return null
           }
         })}
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <button
+          style={{
+            height: 30,
+            width: 100,
+            borderRadius: 5,
+            borderWidth: 0,
+            backgroundColor: '#3133b1',
+            color: 'white',
+          }}
+          onClick={() => onSubmitButton()}
+        >
+          Submit
+        </button>
+      </div>
     </div>
   )
 }
 
 export default LessonPlan
+
+LessonPlan.propTypes = {
+  primary: PropTypes.string,
+  LessonPlanObj: PropTypes.array,
+  onSubmit: PropTypes.func,
+}
+
+LessonPlan.defaultProps = {
+  primary: 'Testing',
+  LessonPlanObj: tempData,
+  onSubmit: undefined,
+}
