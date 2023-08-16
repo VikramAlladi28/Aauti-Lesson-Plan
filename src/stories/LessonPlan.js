@@ -36,7 +36,7 @@ let topicObject = {
 
 const LessonPlan = ({ primary, LessonPlanObj, onSubmit }) => {
   console.log(primary, 'primary', LessonPlanObj)
-  const [data, setData] = useState(tempData)
+  const [data, setData] = useState(LessonPlanObj)
   const [currentTopic, setCurrentTopic] = useState(1)
   const [currentSubTopic, setCurrentSubTopic] = useState(1)
 
@@ -163,6 +163,33 @@ const LessonPlan = ({ primary, LessonPlanObj, onSubmit }) => {
               : onChangeSubTopicInputs(e.target.value, 'subTopicName')
           }
         />
+        <h5 style={{ marginBottom: 10 }}>
+          {input === 'topic' ? 'Topic Description :' : 'SubTopic Description :'}
+        </h5>
+        <textarea
+          style={{
+            height: 200,
+            borderColor: 'lightgray',
+            borderRadius: 5,
+            marginTop: 10,
+            padding: 5,
+            maxHeight: 100,
+            minHeight: 100,
+            minWidth: '99.5%',
+            maxWidth: '99.5%',
+            outline: 'none',
+          }}
+          name='description'
+          placeholder='Description'
+          value={
+            input === 'topic' ? each.topicDescription : each.subTopicDescription
+          }
+          onChange={(e) =>
+            input === 'topic'
+              ? onChangeTopicInputs(e.target.value, 'topicDescription')
+              : onChangeSubTopicInputs(e.target.value, 'subTopicDescription')
+          }
+        ></textarea>
       </div>
     )
   }
