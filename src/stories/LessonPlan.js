@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './LessonPlan.css'
 import { Editor } from 'react-draft-wysiwyg'
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
@@ -10,10 +10,7 @@ const tempData = [
     selected: false,
     topicDescription: '',
     contentData: '',
-    uploadContent: [
-      'https://svbk-lms.s3.ap-south-1.amazonaws.com/aautie/images.jpeg',
-      'https://svbk-lms.s3.ap-south-1.amazonaws.com/aautie/Wallpaper.jpeg',
-    ],
+    uploadContent: [],
     subTopics: [],
   },
 ]
@@ -34,11 +31,14 @@ let topicObject = {
   subTopics: [],
 }
 
-const LessonPlan = ({ primary, LessonPlanObj, onSubmit }) => {
-  console.log(primary, 'primary', LessonPlanObj)
+const LessonPlan = ({ LessonPlanObj = tempData, onSubmit }) => {
   const [data, setData] = useState(LessonPlanObj)
   const [currentTopic, setCurrentTopic] = useState(1)
   const [currentSubTopic, setCurrentSubTopic] = useState(1)
+
+  useEffect(() => {
+    setData(LessonPlanObj)
+  }, [LessonPlanObj])
 
   const onSubmitButton = () => {
     onSubmit && onSubmit(data)
