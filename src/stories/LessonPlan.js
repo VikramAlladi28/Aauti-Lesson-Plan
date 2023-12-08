@@ -1,8 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import './LessonPlan.css'
-import { Editor } from 'react-draft-wysiwyg'
+// import { Editor } from 'react-draft-wysiwyg'
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 import PropTypes from 'prop-types'
+import JoditEditor from 'jodit-react'
+
+const editorProps = {
+  showCharsCounter: false,
+  showWordsCounter: false,
+  showXPathInStatusbar: false,
+  maxHeight: 400,
+  buttons:
+    'bold,italic,underline,strikethrough,eraser,ul,ol,font,fontsize,paragraph,classSpan,lineHeight,superscript,subscript,file,image,video,spellcheck,cut',
+}
 
 const tempData = [
   {
@@ -31,10 +41,35 @@ let topicObject = {
   subTopics: [],
 }
 
-const LessonPlan = ({ LessonPlanObj = tempData, onSubmit }) => {
+const LessonPlan = (props) => {
+  const { LessonPlanObj = tempData, onSubmit } = props
   const [data, setData] = useState(LessonPlanObj)
   const [currentTopic, setCurrentTopic] = useState(1)
   const [currentSubTopic, setCurrentSubTopic] = useState(1)
+
+  const uploadImage = async (res, key) => {
+    const data = new FormData()
+    data.append('file', res.target.files[0])
+    try {
+      const urlOfS = 'https://aautimpapi.azurewebsites.net/file/upload'
+      const responseOfFileUpload = await fetch(urlOfS, {
+        method: 'POST',
+        body: data,
+      })
+      if (responseOfFileUpload.status === 200) {
+        let responseInJs = await responseOfFileUpload.json()
+        if (key === 'topic') {
+          onChangeTopicInputs(responseInJs?.result, 'uploadContent')
+        } else {
+          onChangeSubTopicInputs(responseInJs?.result, 'uploadContent')
+        }
+      } else {
+        console.log('else')
+      }
+    } catch (err) {
+      console.log('catch', err)
+    }
+  }
 
   useEffect(() => {
     setData(LessonPlanObj)
@@ -198,7 +233,7 @@ const LessonPlan = ({ LessonPlanObj = tempData, onSubmit }) => {
     return (
       <>
         <h5 style={{ marginBottom: 10 }}>Content :</h5>
-        <Editor
+        {/* <Editor
           initialContentState={each?.contentData}
           onChange={(e) =>
             input === 'topic'
@@ -211,6 +246,16 @@ const LessonPlan = ({ LessonPlanObj = tempData, onSubmit }) => {
           style={{
             width: '100%',
           }}
+        /> */}
+        <JoditEditor
+          config={editorProps}
+          value={each?.contentData}
+          tabIndex={1} // tabIndex of textarea
+          onChange={(e) =>
+            input === 'topic'
+              ? onChangeTopicInputs(e, 'topicContent')
+              : onChangeSubTopicInputs(e, 'subTopicContent')
+          }
         />
       </>
     )
@@ -219,7 +264,14 @@ const LessonPlan = ({ LessonPlanObj = tempData, onSubmit }) => {
   const fileUpload = (each, input) => {
     let hadImages = each?.uploadContent?.length > 0
     return (
-      <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          marginTop: 30,
+        }}
+      >
         <div
           style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}
         >
@@ -263,8 +315,8 @@ const LessonPlan = ({ LessonPlanObj = tempData, onSubmit }) => {
             onChange={(e) => {
               if (e.target.value !== '') {
                 input === 'topic'
-                  ? onChangeTopicInputs(e.target.value, 'uploadContent')
-                  : onChangeSubTopicInputs(e.target.value, 'uploadContent')
+                  ? uploadImage(e, 'topic')
+                  : uploadImage(e, 'subTopic')
               }
             }}
           />
@@ -446,6 +498,7 @@ const LessonPlan = ({ LessonPlanObj = tempData, onSubmit }) => {
               return each
             })
             setData(modification)
+            subTopicLength === 0 && setCurrentSubTopic(1)
           }}
         >
           +
