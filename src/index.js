@@ -19,4 +19,4 @@
 // reportWebVitals()
 
 export { default as LessonPlan } from './stories/LessonPlan'
-export { default as TypeOne } from './stories/Assignment/TypeOne/TypeOne'
+// export { default as TypeOne } from './stories/Assignment/TypeOne/TypeOne'

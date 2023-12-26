@@ -69,15 +69,4 @@ input[type='file'] {
     opacity: 0;
     overflow: hidden;
     position: absolute;
-
-
-}
-
-.remove-button {
-    /* position: absolute; */
-    /* margin-left: -10px;margin-top: -10px;
-color: 'red';
-border-radius: 40px;
-border-width: 0px;*/
-    /* transform: rotate(45deg); */
 }
