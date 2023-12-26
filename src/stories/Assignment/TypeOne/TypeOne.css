@@ -1,0 +1,96 @@
+.hideScroll::-webkit-scrollbar {
+    display: none;
+}
+
+.scroll-div {
+    display: flex;
+    flex-direction: row;
+    /* overflow-x:auto; */
+    flex-wrap: wrap;
+}
+
+.main-div {
+    width: 100%;
+}
+
+.dropDown-div {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.select-container {
+    border: 1px solid lightgray;
+    width: 150px;
+    padding: 10px;
+}
+
+.option-div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.option-input-style {
+    border: 1px solid lightgray;
+    height: 30px;
+    width: 50%;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.option-add-btn {
+    font-size: 50px;
+    padding: 0px;
+    margin: 0px;
+    background-color: transparent;
+    border-width: 0px;
+}
+
+.option-remove-btn {
+    padding: 0px;
+    margin: 0px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50px;
+    margin-left: 10px;
+    rotate: 45deg;
+    font-size: 18px;
+    background-color: transparent;
+    border-width: 0px;
+}
+
+.submit-button-div {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+}
+
+.iframe-style {
+    height: 300px;
+    width: 100%;
+    border: 1px solid lightgray;
+}
+
+.EUoption-div {
+    margin-bottom: 15px;
+}
+
+.input-radio {
+    border: 0px;
+    width: 40px;
+    height: 0.2em;
+}
+
+.remove-button {
+    position: absolute;
+    margin-left: -10px;
+    margin-top: -10px;
+    color: red;
+    border-radius: 40px;
+    border-width: 0px;
+    transform: rotate(45deg);
+}

@@ -8,6 +8,7 @@ export default {
 export const Primary = {
   args: {
     label: 'TypeOne',
-    role: 'T',
+    role: 'SP',
+    maxNoOfQuestion: 5,
   },
 }

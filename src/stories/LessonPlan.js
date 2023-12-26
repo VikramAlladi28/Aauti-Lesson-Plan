@@ -1,18 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import './LessonPlan.css'
-// import { Editor } from 'react-draft-wysiwyg'
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 import PropTypes from 'prop-types'
-import JoditEditor from 'jodit-react'
-
-const editorProps = {
-  showCharsCounter: false,
-  showWordsCounter: false,
-  showXPathInStatusbar: false,
-  maxHeight: 400,
-  buttons:
-    'bold,italic,underline,strikethrough,eraser,ul,ol,font,fontsize,paragraph,classSpan,lineHeight,superscript,subscript,file,image,video,spellcheck,cut',
-}
+import { Editor } from './Editor'
 
 const tempData = [
   {
@@ -42,16 +31,20 @@ let topicObject = {
 }
 
 const LessonPlan = (props) => {
-  const { LessonPlanObj = tempData, onSubmit } = props
+  const { LessonPlanObj = tempData, onSubmit, outerSubmit } = props
   const [data, setData] = useState(LessonPlanObj)
   const [currentTopic, setCurrentTopic] = useState(1)
   const [currentSubTopic, setCurrentSubTopic] = useState(1)
 
   const uploadImage = async (res, key) => {
     const data = new FormData()
-    data.append('file', res.target.files[0])
+    const values = Object.values(res?.target?.files)
+    values.map((each) => {
+      data.append('file', each)
+    })
     try {
-      const urlOfS = 'https://aautimpapi.azurewebsites.net/file/upload'
+      const urlOfS =
+        'https://aautimpapi.azurewebsites.net/file/multipleFileUpload'
       const responseOfFileUpload = await fetch(urlOfS, {
         method: 'POST',
         body: data,
@@ -64,7 +57,7 @@ const LessonPlan = (props) => {
           onChangeSubTopicInputs(responseInJs?.result, 'uploadContent')
         }
       } else {
-        console.log('else')
+        console.log(`status code error ${responseOfFileUpload.status}`)
       }
     } catch (err) {
       console.log('catch', err)
@@ -78,6 +71,12 @@ const LessonPlan = (props) => {
   const onSubmitButton = () => {
     onSubmit && onSubmit(data)
   }
+
+  useEffect(() => {
+    if (outerSubmit) {
+      onSubmitButton()
+    }
+  }, [outerSubmit])
 
   const onChangeTopicInputs = (text, input) => {
     const newTopicList = data?.map((eachTopic, idx) => {
@@ -98,11 +97,10 @@ const LessonPlan = (props) => {
               //     imageUrl: text,
               //   },
               // ],
-              uploadContent: [...eachTopic?.uploadContent, text],
+              uploadContent: [...eachTopic?.uploadContent, ...text],
             }
           default:
             return eachTopic
-          // break
         }
       } else {
         return eachTopic
@@ -133,11 +131,10 @@ const LessonPlan = (props) => {
                     //     imageUrl: text,
                     //   },
                     // ],
-                    uploadContent: [...eachSubTopic?.uploadContent, text],
+                    uploadContent: [...eachSubTopic?.uploadContent, ...text],
                   }
                 default:
                   return eachSubTopic
-                // break
               }
             } else {
               return eachSubTopic
@@ -150,6 +147,32 @@ const LessonPlan = (props) => {
       }
     })
     setData(newTopicList)
+  }
+
+  const onRemoveFile = (imgIndex, input) => {
+    let update = data?.map((each, id) => {
+      if (id === currentTopic - 1) {
+        if (input == 'topic') {
+          let filterImg = each?.uploadContent.filter(
+            (EachUpload, urlIndex) => urlIndex !== imgIndex
+          )
+          return { ...each, uploadContent: filterImg }
+        } else {
+          let updateSubTopics = each?.subTopics?.map((subEach, subIndex) => {
+            if (subIndex === currentSubTopic - 1) {
+              let filterImg = subEach?.uploadContent.filter(
+                (subEachUpload, urlIndex) => urlIndex !== imgIndex
+              )
+              return { ...each, uploadContent: filterImg }
+            }
+            return subEach
+          })
+          return { ...each, subTopics: updateSubTopics }
+        }
+      }
+      return each
+    })
+    setData(update)
   }
 
   const onDeleteTopic = (indexValue) => {
@@ -233,24 +256,8 @@ const LessonPlan = (props) => {
     return (
       <>
         <h5 style={{ marginBottom: 10 }}>Content :</h5>
-        {/* <Editor
-          initialContentState={each?.contentData}
-          onChange={(e) =>
-            input === 'topic'
-              ? onChangeTopicInputs(e, 'topicContent')
-              : onChangeSubTopicInputs(e, 'subTopicContent')
-          }
-          toolbarClassName='toolbarClassName localToolBar'
-          wrapperClassName='wrapperClassName localEditor localEditorBorder'
-          editorClassName='editorClassName localEditor'
-          style={{
-            width: '100%',
-          }}
-        /> */}
-        <JoditEditor
-          config={editorProps}
+        <Editor
           value={each?.contentData}
-          tabIndex={1} // tabIndex of textarea
           onChange={(e) =>
             input === 'topic'
               ? onChangeTopicInputs(e, 'topicContent')
@@ -273,20 +280,41 @@ const LessonPlan = (props) => {
         }}
       >
         <div
-          style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+          }}
         >
           {hadImages &&
-            each?.uploadContent?.map((eachImg) => (
-              <img
-                src={eachImg}
-                alt=''
-                style={{
-                  height: 94,
-                  width: 100,
-                  marginRight: 10,
-                  marginBottom: 10,
-                }}
-              />
+            each?.uploadContent?.map((eachImg, imgIndex) => (
+              <div style={{}}>
+                <img
+                  src={eachImg}
+                  alt=''
+                  style={{
+                    height: 94,
+                    width: 100,
+                    marginRight: 10,
+                    marginBottom: 10,
+                  }}
+                />
+                <button
+                  style={{
+                    position: 'absolute',
+                    marginLeft: -25,
+                    marginTop: -10,
+                    borderRadius: 40,
+                    borderWidth: 0,
+                    color: 'red',
+                    transform: 'rotate(45deg)',
+                  }}
+                  // className='remove-button'
+                  onClick={() => onRemoveFile(imgIndex, input)}
+                >
+                  +
+                </button>
+              </div>
             ))}
         </div>
         <div
@@ -340,9 +368,7 @@ const LessonPlan = (props) => {
     return (
       <div id={key}>
         {inputField(each, input)}
-        {/* <div className='eidtor_container'> */}
         {editor(each, input)}
-        {/* </div> */}
         {fileUpload(each, input)}
       </div>
     )
@@ -512,28 +538,30 @@ const LessonPlan = (props) => {
             return null
           }
         })}
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <button
+      {outerSubmit === undefined && (
+        <div
           style={{
-            height: 30,
-            width: 100,
-            borderRadius: 5,
-            borderWidth: 0,
-            backgroundColor: '#3133b1',
-            color: 'white',
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
-          onClick={() => onSubmitButton()}
         >
-          Submit
-        </button>
-      </div>
+          <button
+            style={{
+              height: 30,
+              width: 100,
+              borderRadius: 5,
+              borderWidth: 0,
+              backgroundColor: '#3133b1',
+              color: 'white',
+            }}
+            onClick={() => onSubmitButton()}
+          >
+            Submit
+          </button>
+        </div>
+      )}
     </div>
   )
 }
@@ -544,10 +572,12 @@ LessonPlan.propTypes = {
   primary: PropTypes.string,
   LessonPlanObj: PropTypes.array,
   onSubmit: PropTypes.func,
+  outerSubmit: PropTypes.bool,
 }
 
 LessonPlan.defaultProps = {
   primary: 'Testing',
   LessonPlanObj: tempData,
   onSubmit: undefined,
+  outerSubmit: undefined,
 }

@@ -1,5 +1,5 @@
-.input{
-    outline:none;
+.input {
+    outline: none;
     /* width:90vw; */
     height: 35px;
     padding-left: 5px;
@@ -10,15 +10,16 @@
     /* margin-bottom: 20px; */
 }
 
-.localEditor{
+.localEditor {
     /* background-color: lightgray; */
     /* width:90vw; */
     height: 45vh;
     overflow-y: auto;
-    margin-bottom: 20px;            
-    
+    margin-bottom: 20px;
+
 }
-.localEditorBorder{
+
+.localEditorBorder {
     border-width: 1px;
     border-color: lightgray;
     border-style: solid;
@@ -26,7 +27,7 @@
     overflow-y: auto;
 }
 
-.localToolBar{
+.localToolBar {
     /* position: fixed; */
     /* overflow-y: visible; */
 }
@@ -57,17 +58,26 @@ color: white;
 } */
 
 input[type='file'] {
-  color: rgba(0, 0, 0, 0)
+    color: rgba(0, 0, 0, 0)
 }
 
 
 
 .inputfile {
-	/* width: '200px';
+    /* width: '200px';
 	height: '194px'; */
-	opacity: 0;
-	overflow: hidden;
-	position: absolute;
-    
-	
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+
+
+}
+
+.remove-button {
+    /* position: absolute; */
+    /* margin-left: -10px;margin-top: -10px;
+color: 'red';
+border-radius: 40px;
+border-width: 0px;*/
+    /* transform: rotate(45deg); */
 }
