@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { Editor } from '../../Editor'
 import { Button } from '../../Button'
 import './TypeOne.css'
 import { DottedButton } from '../../DottedButton'
 import { Upload } from '../../Helper'
+import PropTypes from 'prop-types'
 
 const defaultOption = {
   value: '',
@@ -339,3 +340,15 @@ const TypeOne = (props) => {
 }
 
 export default TypeOne
+
+TypeOne.propTypes = {
+  label: PropTypes.string,
+  role: PropTypes.string,
+  maxNoOfQuestion: PropTypes.number,
+}
+
+TypeOne.defaultProps = {
+  label: 'TypeOne',
+  role: 'SP',
+  maxNoOfQuestion: 5,
+}
